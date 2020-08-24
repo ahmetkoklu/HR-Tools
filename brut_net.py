@@ -94,30 +94,25 @@ while True:
 
 print(f'Brut Maaş=\033[1m {Brut}\033[0m')
 
-if Ay == 1:
-    print('Hesaplanacak Ay=\033[1m \033[92mOcak\033[0m')
-elif Ay == 2:
-    print('Hesaplanacak Ay=\033[1m \033[92mŞubat\033[0m')
-elif Ay == 3:
-    print('Hesaplanacak Ay=\033[1m \033[92mMart\033[0m')
-elif Ay == 4:
-    print('Hesaplanacak Ay=\033[1m \033[92mNisan\033[0m')
-elif Ay == 5:
-    print('Hesaplanacak Ay=\033[1m \033[92mMayıs\033[0m')
-elif Ay == 6:
-    print('Hesaplanacak Ay=\033[1m \033[92mHaziran\033[0m')
-elif Ay == 7:
-    print('Hesaplanacak Ay=\033[1m \033[92mTemmuz\033[0m')
-elif Ay == 8:
-    print('Hesaplanacak Ay=\033[1m \033[92mAğustos\033[0m')
-elif Ay == 9:
-    print('Hesaplanacak Ay=\033[1m \033[92mEylül\033[0m')
-elif Ay == 10:
-    print('Hesaplanacak Ay=\033[1m \033[92mEkim\033[0m')
-elif Ay == 11:
-    print('Hesaplanacak Ay=\033[1m \033[92mKasım\033[0m')
-elif Ay == 12:
-    print('Hesaplanacak Ay=\033[1m \033[92mAralık\033[0m')
+months = {
+  1:  'Ocak',
+  2:  'Şubat',
+  3:  'Mart',
+  4:  'Nisan',
+  5:  'Mayıs',
+  6:  'Haziran',
+  7:  'Temmuz',
+  8:  'Ağustos',
+  9:  'Eylül',
+  10: 'Ekim',
+  11: 'Kasım',
+  12: 'Aralık'
+  }
+
+if Ay in months:
+  print(f'Hesaplanacak Ay=\033[1m \033[92m{months[Ay]}\033[0m')
+else:
+  print(f'Geçersiz ay: {Ay}')
 
 print(f'Çocuk Sayısı=\033[1m \033[92m{Cocuk}\033[0m')
 
