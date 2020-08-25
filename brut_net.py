@@ -1,14 +1,25 @@
-class color:
-    PURPLE = '\033[95m'
-    CYAN = '\033[96m'
-    DARKCYAN = '\033[36m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    END = '\033[0m'
+def inputformati(girdi):
+    return f'\033[1m \033[94m{girdi}\033[0m'
+
+
+def uyariformati(uyari):
+    return f'\033[91m \033[1m{uyari}\033[0m'
+
+
+def soruformati(soru):
+    return f'\033[4m {soru}\033[0m'
+
+
+def sakaformati(saka):
+    return f'\033[96m \033[1m{saka}\033[0m'
+
+
+def nadirsakaformati(nadirsaka):
+    return f'\033[36m \033[1m{nadirsaka}\033[0m'
+
+
+def sonucformati(sonuc):
+    return f'\033[1m{sonuc}\033[0m'
 
 
 def kgvmhesaplama(ay, gvm):
@@ -17,38 +28,57 @@ def kgvmhesaplama(ay, gvm):
         kumulatifgvm = kumulatifgvm + gvm
     return kumulatifgvm
 
+def oncekiayhesaplama(ay,gvm):
+    oncekiay = kgvmhesaplama(ay-1,gvm)
+    return oncekiay
 
-def gvhesaplama(kumulatif, ay, gelirvermat):
+def gvhesaplama(kumulatif, oncekiay, gelirvermat):
     aylikgv = 0
     if kumulatif < 22000:
         gvorani = 0.15
         aylikgv = gelirvermat * gvorani
     elif 22000 < kumulatif < 46000:
         gvorani = 0.2
-        if kgvmhesaplama(ay - 1, gelirvermat) <= 22000:
-            aylikgv = ((22000 - kgvmhesaplama(ay - 1, gelirvermat)) * 0.15) + ((kumulatif - 22000) * gvorani)
-        aylikgv = gelirvermat * gvorani
+        if oncekiay <= 22000:
+            aylikgv = ((22000 - oncekiay) * 0.15) + ((kumulatif - 22000) * gvorani)
+        else:
+            aylikgv = gelirvermat * gvorani
     elif 46000 < kumulatif < 120000:
         gvorani = 0.27
-        if kgvmhesaplama(Ay - 1, gelirvermat) <= 46000:
-            aylikgv = ((46000 - kgvmhesaplama(ay - 1, gelirvermat)) * 0.2) + ((kumulatif - 46000) * gvorani)
-        aylikgv = gelirvermat * gvorani
+        if oncekiay <= 46000:
+            aylikgv = ((46000 - oncekiay) * 0.2) + ((kumulatif - 46000) * gvorani)
+        else:
+            aylikgv = gelirvermat * gvorani
     elif 120000 < kumulatif < 600000:
         gvorani = 0.35
-        if kgvmhesaplama(Ay - 1, gelirvermat) <= 120000:
-            aylikgv = ((120000 - kgvmhesaplama(ay - 1, gelirvermat)) * 0.27) + ((kumulatif - 120000) * gvorani)
-        aylikgv = gelirvermat * gvorani
+        if oncekiay <= 120000:
+            aylikgv = ((120000 - oncekiay) * 0.27) + ((kumulatif - 120000) * gvorani)
+        else:
+            aylikgv = gelirvermat * gvorani
     elif 600000 < kumulatif:
         gvorani = 0.4
-        if kgvmhesaplama(Ay - 1, gelirvermat) < 120000:
-            aylikgv = (600000 - (kgvmhesaplama(ay - 1, gelirvermat)) * 0.35) + ((kumulatif - 600000) * gvorani)
-        aylikgv = gelirvermat * gvorani
+        if oncekiay < 600000:
+            aylikgv = ((600000 - oncekiay) * 0.35) + ((kumulatif - 600000) * gvorani)
+        else:
+            aylikgv = gelirvermat * gvorani
     return aylikgv
 
 
 def agihesaplama(medeni, cocuk, escalisma):
+    agi=0
     if medeni == 0:
-        agi = 220.73
+        if cocuk == 0:
+            agi = 220.73
+        if cocuk == 1:
+            agi = 253.83
+        if cocuk == 2:
+            agi = 286.94
+        if cocuk == 3:
+            agi = 331.09
+        if cocuk == 4:
+            agi = 353.16
+        if cocuk == 5:
+            agi = 375.23
     if medeni == 1:
         if escalisma == 0:
             if cocuk == 0:
@@ -77,20 +107,20 @@ def agihesaplama(medeni, cocuk, escalisma):
 
 def userbrut():
     while True:
-        Brut = input(color.UNDERLINE + 'Lütfen aylık brüt ücretinizi giriniz:' + color.END)
+        Brut = input(f'{soruformati("Lütfen aylık brüt ücretinizi giriniz:")}')
         try:
             Brut = int(Brut)
         except:
-            print(color.RED + color.BOLD + 'Lütfen sayısal bir değer girin !' + color.END)
+            print(f'{uyariformati("Lütfen sayısal bir değer girin !")}')
             continue
         try:
             if Brut < 2943:
-                print(color.RED + color.BOLD + '2020 yılı içerisinde brüt ücret 2.943 liradan az olamaz' + color.END)
+                print(f'{uyariformati("2020 yılı içerisinde brüt ücret 2.943 liradan az olamaz")}')
                 continue
             elif 50000 > Brut > 15000:
-                print(color.BLUE + color.BOLD + 'Hey Maşallah, Allah daha çok versin' + color.END)
+                print(f'{sakaformati("Hey Maşallah, Allah daha çok versin")}')
             elif Brut > 50000:
-                print(color.GREEN + color.BOLD + 'Hoşgelmişsin Ağam. Bütün marabaların yolunu bekliyirdi.' + color.END)
+                print(f'{nadirsakaformati("Hoşgelmişsin Ağam. Bütün marabaların yolunu bekliyirdi.")}')
             break
         except:
             continue
@@ -98,75 +128,87 @@ def userbrut():
 
 
 def useray():
+    ay=0
     while True:
         try:
-            Ay = input(color.UNDERLINE + 'Kaçıncı ayı hesaplamak istiyorsunuz(1-12):' + color.END)
-            Ay = int(Ay)
+            ay = input(f'{soruformati("Kaçıncı ayı hesaplamak istiyorsunuz(1-12):")}')
+            ay = int(ay)
         except:
-            print(color.RED + color.BOLD + 'Lütfen sayısal bir değer girin' + color.END)
+            print(f'{uyariformati("Lütfen sayısal bir değer girin")}')
             continue
-        if 0 < Ay < 13:
+        if 0 < ay < 13:
             break
         else:
-            print(color.RED + color.BOLD + 'Bir yılda 12 ay bulunur' + color.END)
+            print(f'{uyariformati("Bir yılda 12 ay bulunur")}')
             continue
-    return Ay
+    return ay
 
-
-def usermedeni():
+def usercocuk():
+    cocuk=0
     while True:
-        Medeni = input(color.UNDERLINE + 'Evli misiniz?(E/H):' + color.END)
-        if Medeni == 'E' or Medeni == 'e':
-            Medeni = 1
-            print('Medeni Hali=\033[1m \033[92m Evli\033[0m')
-            while True:
-                try:
-                    Cocuk = input(color.UNDERLINE + 'Varsa çocuk sayısını belirtiniz, yoksa 0 yazınız :' + color.END)
-                    Cocuk = int(Cocuk)
-                except:
-                    print(
-                        color.RED + color.BOLD + 'Lütfen çocuk sayısını sayısal olarak girin, çocuğunuz yoksa 0 girin' + color.END)
-                    continue
-                if 10 > Cocuk > 5:
-                    print(color.BLUE + color.BOLD + 'Hey Maşallah, Allah Bağışlasın' + color.END)
-                    break
-                elif Cocuk > 10:
-                    print(color.GREEN + color.BOLD + 'Senin derdin bizi aşar kardeş' + color.END)
-                    break
-                else:
-                    print(color.BLUE + color.BOLD + 'Allah bağışlasın' + color.END)
-                    break
-            while True:
-                Escalisma = input(color.UNDERLINE + 'Eşiniz çalışıyor mu?(E/H):' + color.END)
-                if Escalisma == 'E' or Escalisma == 'e':
-                    Escalisma = 1
-                    print('Eşin Çalışma Durumu=\033[1m \033[92mÇalışıyor\033[0m')
-                    break
-                elif Escalisma == 'H' or Escalisma == 'h':
-                    Escalisma = 0
-                    print('Eşin Çalışma Durumu=\033[1m \033[92mÇalışmıyor\033[0m')
-                    break
-                else:
-                    print(
-                        color.RED + color.BOLD + 'Lütfen eşiniz çalışıyorsa E çalışmıyorsa H yazın, sizin gül hatrınız için küçük harfleri de kabul ediyoruz' + color.END)
-                    continue
+        try:
+            cocuk = input(f'{soruformati("Varsa çocuk sayısını belirtiniz, yoksa 0 yazınız :")}')
+            cocuk = int(cocuk)
+        except:
+            print(f'{uyariformati("Lütfen çocuk sayısını sayısal olarak girin, çocuğunuz yoksa 0 girin")}')
+            continue
+        if 10 > cocuk > 5:
+            print(f'{sakaformati("Hey Maşallah, Allah Bağışlasın")}')
             break
-        elif Medeni == 'H' or Medeni == 'h':
-            Medeni = 0
-            Cocuk = 0
-            Escalisma = 0
-            print('Medeni Hali=\033[1m \033[92mBekar\033[0m')
+        elif cocuk > 10:
+            print(f'{nadirsakaformati("Senin derdin bizi aşar kardeş")}')
+            break
+        else:
+            print(f'{sakaformati("Allah bağışlasın")}')
+            break
+    return cocuk
+
+def userescalisma():
+    while True:
+        escalisma = input(f'{soruformati("Eşiniz çalışıyor mu?(E/H):")}')
+        if escalisma == 'E' or escalisma == 'e':
+            escalisma = 1
+            print(f'Eşin Çalışma Durumu={inputformati("Çalışıyor")}')
+            break
+        elif escalisma == 'H' or escalisma == 'h':
+            escalisma = 0
+            print(f'Eşin Çalışma Durumu={inputformati("Çalışmıyor")}')
             break
         else:
             print(
-                color.RED + color.BOLD + 'Lütfen evliyseniz E bekarsanız H yazın, sizin gül hatrınız için küçük harfleri de kabul ediyoruz' + color.END)
+                f'{uyariformati("Lütfen eşiniz çalışıyorsa E çalışmıyorsa H yazın, sizin gül hatrınız için küçük harfleri de kabul ediyoruz")}')
             continue
-    return Medeni, Cocuk, Escalisma
+    return escalisma
+
+
+
+def usermedeni():
+    cocuk = 0
+    escalisma = 0
+    while True:
+        medeni = input(f'{soruformati("Evli misiniz?(E/H):")}')
+        if medeni == 'E' or medeni == 'e':
+            medeni = 1
+            print(f'Medeni Hali= {inputformati("Evli")}')
+            cocuk = usercocuk()
+            escalisma = userescalisma()
+            break
+        elif medeni == 'H' or medeni == 'h':
+            medeni = 0
+            escalisma = 0
+            print(f'Medeni Hali={inputformati("Bekar")}')
+            cocuk = usercocuk()
+            break
+        else:
+            print(
+                f'{uyariformati("Lütfen evliyseniz E bekarsanız H yazın, sizin gül hatrınız için küçük harfleri de kabul ediyoruz")}')
+            continue
+    return medeni, cocuk, escalisma
 
 
 def sgkiscihesaplama(brut):
-    Sgkisci = brut * 0.14
-    return Sgkisci
+    sgkisci = brut * 0.14
+    return sgkisci
 
 
 def issiziscihesaplama(brut):
@@ -194,7 +236,7 @@ def issizlikisverenhesaplama(brut):
     return issizlikisveren
 
 
-def ayadiprint(ay):
+def ayismi(ay):
     aylar = {
         1: 'Ocak',
         2: 'Şubat',
@@ -211,7 +253,7 @@ def ayadiprint(ay):
     }
 
     if ay in aylar:
-        print(f'Hesaplanacak Ay=\033[1m \033[92m{aylar[ay]}\033[0m')
+        return aylar[ay]
     else:
         print(f'Geçersiz ay: {ay}')
 
@@ -234,33 +276,36 @@ def topisvmalhesaplama(brut, sgkisveren, issizlikisveren):
 if __name__ == '__main__':
     Brut = userbrut()
     Ay = useray()
+    Ayismi = ayismi(Ay)
     Medeni, Cocuk, Escalisma = usermedeni()
     Sgkisci = sgkiscihesaplama(Brut)
     Issizlik = issiziscihesaplama(Brut)
     Gelirvermat = gvmathesaplama(Brut, Sgkisci, Issizlik)
+    Oncekiaykgvm = oncekiayhesaplama(Ay, Gelirvermat)
     Damgavergisi = dvhesaplama(Brut)
     Sgkisveren = sgkisverenhesaplama(Brut)
     Issizlikisveren = issizlikisverenhesaplama(Brut)
     Kumulatif = kgvmhesaplama(Ay, Gelirvermat)
-    Aylikgelirvergisi = gvhesaplama(Kumulatif, Ay, Gelirvermat)
+    Aylikgelirvergisi = gvhesaplama(Kumulatif, Oncekiaykgvm, Gelirvermat)
     Agi = agihesaplama(Medeni, Cocuk, Escalisma)
     Netmaas = netmaashesaplama(Brut, Sgkisci, Issizlik, Aylikgelirvergisi, Damgavergisi)
     Toplamelegecen = topelgecenhesaplama(Netmaas, Agi)
     Toplamisverenmaliyeti = topisvmalhesaplama(Brut, Sgkisveren, Issizlikisveren)
 
-    ayadiprint(Ay)
+    print(f'Hesaplanacak Ay= {inputformati(Ayismi)}')
+    print(f'Brut Maaş= {inputformati(Brut)}')
+    print(f'Çocuk Sayısı= {inputformati(Cocuk)}')
+    print(f'Kümülatif Vergi Matrahı= {sonucformati(Kumulatif)}')
+    print(f'Sgk İşçi Payı= {sonucformati(Sgkisci)}')
+    print(f'İşsizlik sigortası İşçi Payı= {sonucformati(Issizlik)}')
+    print(f'Gelir Vergisi Matrahı= {sonucformati(Gelirvermat)}')
+    print(f'Damga Vergisi= {sonucformati(Damgavergisi)}')
+    print(f'İşsizlik Sigortası İşveren Payı= {sonucformati(Issizlikisveren)}')
+    print(f'Sgk İşveren Payı= {sonucformati(Sgkisveren)}')
+    print(f'Aylık Gelir Vergisi= {sonucformati(Aylikgelirvergisi)}')
+    print(f'Asgari Geçim İndirimi= {sonucformati(Agi)}')
+    print(f'Net Maaş= {sonucformati(Netmaas)}')
+    print(f'Toplam Ele Geçen= {sonucformati(Toplamelegecen)}')
+    print(f'İşveren Toplam Maliyeti= {sonucformati(Toplamisverenmaliyeti)}')
 
-    print(f'Brut Maaş=\033[1m \033[92m{Brut}\033[0m')
-    print(f'Çocuk Sayısı=\033[1m \033[92m{Cocuk}\033[0m')
-    print(f'Kümülatif Vergi Matrahı=\033[1m {Kumulatif}\033[0m')
-    print(f'Sgk İşçi Payı=\033[1m {Sgkisci}\033[0m')
-    print(f'İşsizlik sigortası İşçi Payı=\033[1m {Issizlik}\033[0m')
-    print(f'Gelir Vergisi Matrahı=\033[1m {Gelirvermat}\033[0m')
-    print(f'Damga Vergisi=\033[1m {Damgavergisi}\033[0m')
-    print(f'İşsizlik Sigortası İşveren Payı=\033[1m {Issizlikisveren}\033[0m')
-    print(f'Sgk İşveren Payı=\033[1m {Sgkisveren}\033[0m')
-    print(f'Aylık Gelir Vergisi=\033[1m {Aylikgelirvergisi}\033[0m')
-    print(f'Asgari Geçim İndirimi=\033[1m {Agi}\033[0m')
-    print(f'Net Maaş=\033[1m {Netmaas}\033[0m')
-    print(f'Toplam Ele Geçen=\033[1m {Toplamelegecen}\033[0m')
-    print(f'İşveren Toplam Maliyeti=\033[1m {Toplamisverenmaliyeti}\033[0m')
+
