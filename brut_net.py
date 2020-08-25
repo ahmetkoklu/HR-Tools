@@ -113,17 +113,14 @@ def userbrut():
         except:
             print(f'{uyariformati("Lütfen sayısal bir değer girin !")}')
             continue
-        try:
-            if Brut < 2943:
-                print(f'{uyariformati("2020 yılı içerisinde brüt ücret 2.943 liradan az olamaz")}')
-                continue
-            elif 50000 > Brut > 15000:
-                print(f'{sakaformati("Hey Maşallah, Allah daha çok versin")}')
-            elif Brut > 50000:
-                print(f'{nadirsakaformati("Hoşgelmişsin Ağam. Bütün marabaların yolunu bekliyirdi.")}')
-            break
-        except:
+        if Brut < 2943:
+            print(f'{uyariformati("2020 yılı içerisinde brüt ücret 2.943 liradan az olamaz")}')
             continue
+        elif 50000 > Brut > 15000:
+            print(f'{sakaformati("Hey Maşallah, Allah daha çok versin")}')
+        elif Brut > 50000:
+            print(f'{nadirsakaformati("Hoşgelmişsin Ağam. Bütün marabaların yolunu bekliyirdi.")}')
+        break
     return Brut
 
 
@@ -159,7 +156,6 @@ def usercocuk():
             print(f'{nadirsakaformati("Senin derdin bizi aşar kardeş")}')
             break
         else:
-            print(f'{sakaformati("Allah bağışlasın")}')
             break
     return cocuk
 
